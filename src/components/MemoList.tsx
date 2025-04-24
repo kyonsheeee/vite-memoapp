@@ -1,3 +1,4 @@
+import { List, Card, Button, Empty } from "antd";
 import { Memo } from "../types";
 
 type MemoListProps = {
@@ -7,19 +8,30 @@ type MemoListProps = {
 
 export const MemoList = ({ memos, onDelete }: MemoListProps) => {
   if (memos.length === 0) {
-    return <p>メモはまだありません。</p>;
+    return <Empty description="メモはまだありません。" />;
   }
 
   return (
-    <div>
-      {memos.map((memo) => (
-        <div>
-          <h2>{memo.title}</h2>
-          <p>{memo.content}</p>
-          <p>作成日時: {memo.createdAt.toLocaleString()}</p>
-          <button onClick={() => onDelete(memo.id)}>削除</button>
-        </div>
-      ))}
+    <div style={{ maxWidth: "100%", width: "100%" }}>
+      <List
+        grid={{ gutter: 16, column: 1 }}
+        dataSource={memos}
+        renderItem={(memo) => (
+          <List.Item>
+            <Card
+              title={memo.title || "(タイトルなし)"}
+              extra={
+                <Button danger onClick={() => onDelete(memo.id)}>
+                  削除
+                </Button>
+              }
+              style={{ width: "100%" }}
+            >
+              {memo.content || "(内容なし)"}
+            </Card>
+          </List.Item>
+        )}
+      ></List>
     </div>
   );
 };
