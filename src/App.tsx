@@ -8,7 +8,7 @@ const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 function App() {
-  const { memos, addMemo, deleteMemo } = useMemos();
+  const { memos, addMemo, deleteMemo, updateMemo } = useMemos();
 
   return (
     <div className="App">
@@ -26,7 +26,15 @@ function App() {
             minHeight: "100vh",
           }}
         >
-          <Header style={{ backgroundColor: "#001529", padding: 20 }}>
+          <Header
+            style={{
+              backgroundColor: "#001529",
+              padding: 20,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Title
               level={2}
               style={{ color: "#fff", margin: 0, textAlign: "center" }}
@@ -39,21 +47,24 @@ function App() {
             style={{
               padding: "24px",
               maxWidth: "800px",
-              // margin: "auto",
               display: "flex",
               justifyContent: "center",
-              alignSelf: "center"
+              alignSelf: "center",
             }}
           >
             <Card
               style={{
-                // maxWidth: "600px",
-                // width: "100%",
+                minWidth: "600px",
+                width: "100%",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
               }}
             >
               <MemoForm onAdd={addMemo} />
-              <MemoList memos={memos} onDelete={deleteMemo} />
+              <MemoList
+                memos={memos}
+                onDelete={deleteMemo}
+                onUpdate={updateMemo}
+              />
             </Card>
           </Content>
 

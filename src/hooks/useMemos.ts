@@ -34,12 +34,22 @@ export const useMemos = () => {
       content,
       createdAt: new Date(),
     };
-    setMemos([newMemo, ...memos]);
+    setMemos((prev) => [newMemo, ...prev]);
   };
 
   const deleteMemo = (id: string) => {
-    setMemos(memos.filter((memo) => memo.id !== id));
+    setMemos((prev) => prev.filter((memo) => memo.id !== id));
   };
 
-  return { memos, addMemo, deleteMemo };
+  const updateMemo = (id: string, newTitle: string, newContent: string) => {
+    setMemos((prev) =>
+      prev.map((memo) =>
+        memo.id === id
+          ? { ...memo, title: newTitle, content: newContent }
+          : memo
+      )
+    );
+  };
+
+  return { memos, addMemo, deleteMemo, updateMemo };
 };
