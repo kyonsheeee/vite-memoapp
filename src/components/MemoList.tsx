@@ -13,10 +13,6 @@ export const MemoList = ({ memos, onDelete, onUpdate }: MemoListProps) => {
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
 
-  if (memos.length === 0) {
-    return <Empty description="メモはまだありません。" />;
-  }
-
   const startEditing = (memo: Memo) => {
     setEditId(memo.id);
     setEditTitle(memo.title);
@@ -29,6 +25,16 @@ export const MemoList = ({ memos, onDelete, onUpdate }: MemoListProps) => {
       setEditId(null);
     }
   };
+
+  const cancelEdit = () => {
+    setEditId(null);
+    setEditTitle("");
+    setEditContent("");
+  };
+
+  if (memos.length === 0) {
+    return <Empty description="メモはまだありません。" />;
+  }
 
   return (
     <div style={{ maxWidth: "100%", width: "100%" }}>
@@ -56,12 +62,20 @@ export const MemoList = ({ memos, onDelete, onUpdate }: MemoListProps) => {
               }
               extra={
                 editId === memo.id ? (
-                  <Button type="primary" onClick={saveEdit}>
-                    保存
-                  </Button>
+                  <Space>
+                    <Button type="primary" onClick={saveEdit}>
+                      保存
+                    </Button>
+                    <Button onClick={cancelEdit}>キャンセル</Button>
+                  </Space>
                 ) : (
                   <Space>
-                    <Button onClick={() => startEditing(memo)}>編集</Button>
+                    <Button
+                      onClick={() => startEditing(memo)}
+                      disabled={!!editId}
+                    >
+                      編集
+                    </Button>
                     <Button danger onClick={() => onDelete(memo.id)}>
                       削除
                     </Button>
