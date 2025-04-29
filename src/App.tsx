@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MemoForm } from "./components/MemoForm";
 import { MemoList } from "./components/MemoList";
 import { useMemos } from "./hooks/useMemos";
@@ -9,6 +10,7 @@ const { Title } = Typography;
 
 function App() {
   const { memos, addMemo, deleteMemo, updateMemo } = useMemos();
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div className="App">
@@ -28,7 +30,7 @@ function App() {
         >
           <Header
             style={{
-              backgroundColor: "#001529",
+              background: "linear-gradient(90deg, #ff9a9e 0%, #ff758c 100%)",
               padding: 20,
               display: "flex",
               justifyContent: "center",
@@ -37,7 +39,12 @@ function App() {
           >
             <Title
               level={2}
-              style={{ color: "#fff", margin: 0, textAlign: "center" }}
+              style={{
+                color: "#fff",
+                margin: 0,
+                textAlign: "center",
+                fontFamily: "'Poppins', sans-serif",
+              }}
             >
               メモアプリ
             </Title>
@@ -56,19 +63,21 @@ function App() {
               style={{
                 minWidth: "600px",
                 width: "100%",
+                // backgroundColor: "#fffafc",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
               }}
             >
-              <MemoForm onAdd={addMemo} />
+              <MemoForm onAdd={addMemo} isEditing={isEditing} />
               <MemoList
                 memos={memos}
                 onDelete={deleteMemo}
                 onUpdate={updateMemo}
+                setIsEditing={setIsEditing}
               />
             </Card>
           </Content>
 
-          <Footer style={{ textAlign: "center", backgroundColor: "#f0f2f5" }}>
+          <Footer style={{ textAlign: "center", backgroundColor: "#ffe4e1" }}>
             © {new Date().getFullYear()} Kyoko's Memo App
           </Footer>
         </Layout>

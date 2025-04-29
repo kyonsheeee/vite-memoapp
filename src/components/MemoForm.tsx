@@ -2,9 +2,10 @@ import { Button, Form, Input } from "antd";
 
 type MemoFormProps = {
   onAdd: (title: string, content: string) => void;
+  isEditing?: boolean;
 };
 
-export const MemoForm = ({ onAdd }: MemoFormProps) => {
+export const MemoForm = ({ onAdd, isEditing }: MemoFormProps) => {
   const [form] = Form.useForm();
 
   const handleSubmit = (values: { title: string; content: string }) => {
@@ -20,7 +21,7 @@ export const MemoForm = ({ onAdd }: MemoFormProps) => {
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
-        style={{ marginBottom: "24px" }}
+        style={{ marginBottom: "20px" }}
       >
         <Form.Item label="タイトル" name="title">
           <Input placeholder="タイトル" />
@@ -30,9 +31,20 @@ export const MemoForm = ({ onAdd }: MemoFormProps) => {
             placeholder="メモ内容"
             rows={4}
             autoSize={{ minRows: 3, maxRows: 6 }}
+            disabled={isEditing}
           />
         </Form.Item>
-        <Button type="primary" htmlType="submit" block>
+        <Button
+          type="primary"
+          htmlType="submit"
+          block
+          disabled={isEditing}
+          style={{
+            background: "linear-gradient(90deg, #ff7eb3 0%, #ff758c 100%",
+            border: "none",
+            width: "100%",
+          }}
+        >
           追加
         </Button>
       </Form>

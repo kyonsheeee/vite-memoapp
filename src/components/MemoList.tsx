@@ -6,9 +6,15 @@ type MemoListProps = {
   memos: Memo[];
   onDelete: (id: string) => void;
   onUpdate: (id: string, title: string, content: string) => void;
+  setIsEditing: (editing: boolean) => void;
 };
 
-export const MemoList = ({ memos, onDelete, onUpdate }: MemoListProps) => {
+export const MemoList = ({
+  memos,
+  onDelete,
+  onUpdate,
+  setIsEditing,
+}: MemoListProps) => {
   const [editId, setEditId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
@@ -17,12 +23,14 @@ export const MemoList = ({ memos, onDelete, onUpdate }: MemoListProps) => {
     setEditId(memo.id);
     setEditTitle(memo.title);
     setEditContent(memo.content);
+    setIsEditing(true);
   };
 
   const saveEdit = () => {
     if (editId) {
       onUpdate(editId, editTitle, editContent);
       setEditId(null);
+      setIsEditing(false);
     }
   };
 
@@ -30,6 +38,7 @@ export const MemoList = ({ memos, onDelete, onUpdate }: MemoListProps) => {
     setEditId(null);
     setEditTitle("");
     setEditContent("");
+    setIsEditing(false);
   };
 
   if (memos.length === 0) {
@@ -63,7 +72,16 @@ export const MemoList = ({ memos, onDelete, onUpdate }: MemoListProps) => {
               extra={
                 editId === memo.id ? (
                   <Space>
-                    <Button type="primary" onClick={saveEdit}>
+                    <Button
+                      type="primary"
+                      onClick={saveEdit}
+                      style={{
+                        background:
+                          "linear-gradient(90deg, #ff7eb3 0%, #ff758c 100%)",
+                        border: "none",
+                        marginLeft: "10px"
+                      }}
+                    >
                       保存
                     </Button>
                     <Button onClick={cancelEdit}>キャンセル</Button>
@@ -76,7 +94,11 @@ export const MemoList = ({ memos, onDelete, onUpdate }: MemoListProps) => {
                     >
                       編集
                     </Button>
-                    <Button danger onClick={() => onDelete(memo.id)}>
+                    <Button
+                      danger
+                      onClick={() => onDelete(memo.id)}
+                      disabled={!!editId}
+                    >
                       削除
                     </Button>
                   </Space>
